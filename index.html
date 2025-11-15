@@ -4,35 +4,189 @@
   <meta charset="UTF-8">
   <title>Monk Search</title>
 
-  <!-- Your Google Search Engine code -->
+  <!-- Favicon -->
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4086/4086679.png">
+
+  <!-- Google Custom Search -->
   <script async src="https://cse.google.com/cse.js?cx=a06af4683a2674ae5"></script>
 
   <style>
     body {
-      background: #000;
-      color: white;
+      background: #ffffff;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding-top: 50px;
+      margin: 0;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
     }
+
+    .dark {
+      background: #111;
+      color: #eee;
+    }
+
     .title {
-      font-size: 40px;
+      font-size: 48px;
       font-weight: bold;
-      margin-bottom: 30px;
+      margin-top: 60px;
+      color: #202124;
     }
-    .gcse-search {
-      margin: auto;
-      width: 90%;
-      max-width: 600px;
+
+    .dark .title {
+      color: #f5f5f5;
+    }
+
+    .tagline {
+      font-size: 16px;
+      margin-top: -10px;
+      color: #5f6368;
+    }
+
+    .dark .tagline {
+      color: #ccc;
+    }
+
+    .box {
+      width: 330px;
+      margin: 40px auto;
+      padding: 25px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #fafafa;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .dark .box {
+      background: #222;
+      border-color: #444;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    input {
+      width: 92%;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .dark input {
+      background: #333;
+      color: white;
+      border-color: #666;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #1a73e8;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #1666ce;
+    }
+
+    .logout-btn {
+      background: #d9534f;
+    }
+
+    .logout-btn:hover {
+      background: #c64542;
+    }
+
+    .dark-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      background: #202124;
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .footer {
+      margin-top: 60px;
+      font-size: 14px;
+      color: #777;
+      padding-bottom: 40px;
+    }
+
+    .dark .footer {
+      color: #aaa;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 
 <body>
-  <div class="title">Monk Search</div>
 
-  <!-- Google Search Box -->
-  <div class="gcse-search"></div>
+  <!-- Dark Mode Toggle -->
+  <div class="dark-toggle" onclick="toggleDark()">🌙 Dark Mode</div>
+
+  <div class="title">Monk Search</div>
+  <div class="tagline">Search with Simplicity</div>
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginBox" class="box">
+    <h3>Login</h3>
+    <input id="username" type="text" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- SEARCH SCREEN -->
+  <div id="searchBox" class="hidden">
+    <button class="logout-btn" onclick="logout()">Logout</button>
+
+    <div style="margin-top: 40px;">
+      <div class="gcse-search"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    © 2025 Monk Search — Built for speed and simplicity.
+  </div>
+
+<script>
+  // SIMPLE LOCAL LOGIN
+  const USER = "monk";
+  const PASS = "search123";
+
+  function login() {
+    const u = document.getElementById("username").value;
+    const p = document.getElementById("password").value;
+
+    if (u === USER && p === PASS) {
+      document.getElementById("loginBox").classList.add("hidden");
+      document.getElementById("searchBox").classList.remove("hidden");
+    } else {
+      alert("Incorrect username or password!");
+    }
+  }
+
+  function logout() {
+    document.getElementById("searchBox").classList.add("hidden");
+    document.getElementById("loginBox").classList.remove("hidden");
+  }
+
+  // DARK MODE
+  function toggleDark() {
+    document.body.classList.toggle("dark");
+  }
+</script>
 
 </body>
 </html>
