@@ -1,192 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monk Search</title>
 
-  <!-- Favicon -->
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4086/4086679.png">
-
-  <!-- Google Custom Search -->
+  <!-- Google Search Engine -->
   <script async src="https://cse.google.com/cse.js?cx=a06af4683a2674ae5"></script>
 
   <style>
     body {
-      background: #ffffff;
-      font-family: Arial, sans-serif;
-      text-align: center;
       margin: 0;
       padding: 0;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    .dark {
-      background: #111;
-      color: #eee;
-    }
-
-    .title {
-      font-size: 48px;
-      font-weight: bold;
-      margin-top: 60px;
+      background: #ffffff;
+      font-family: Arial, sans-serif;
       color: #202124;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
     }
 
-    .dark .title {
-      color: #f5f5f5;
-    }
-
-    .tagline {
-      font-size: 16px;
-      margin-top: -10px;
-      color: #5f6368;
-    }
-
-    .dark .tagline {
-      color: #ccc;
-    }
-
-    .box {
-      width: 330px;
-      margin: 40px auto;
-      padding: 25px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      background: #fafafa;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    }
-
-    .dark .box {
-      background: #222;
-      border-color: #444;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-
-    input {
-      width: 92%;
-      padding: 12px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
-    }
-
-    .dark input {
-      background: #333;
-      color: white;
-      border-color: #666;
-    }
-
-    button {
+    .navbar {
       width: 100%;
-      padding: 12px;
-      margin-top: 15px;
-      background: #1a73e8;
-      border: none;
-      color: white;
+      padding: 15px 25px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      background: white;
+    }
+
+    .brand {
+      font-size: 28px;
+      font-weight: bold;
+      color: #000;
+    }
+
+    .login-btn {
       font-size: 16px;
-      border-radius: 6px;
+      padding: 8px 16px;
+      border: 1px solid #000;
+      background: transparent;
+      border-radius: 20px;
       cursor: pointer;
       transition: 0.2s;
     }
 
-    button:hover {
-      background: #1666ce;
-    }
-
-    .logout-btn {
-      background: #d9534f;
-    }
-
-    .logout-btn:hover {
-      background: #c64542;
-    }
-
-    .dark-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 10px 15px;
-      background: #202124;
+    .login-btn:hover {
+      background: #000;
       color: white;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 14px;
+    }
+
+    .container {
+      margin-top: 120px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 64px;
+      font-weight: bold;
+      margin-bottom: 40px;
     }
 
     .footer {
-      margin-top: 60px;
+      position: absolute;
+      bottom: 20px;
       font-size: 14px;
       color: #777;
-      padding-bottom: 40px;
-    }
-
-    .dark .footer {
-      color: #aaa;
-    }
-
-    .hidden {
-      display: none;
     }
   </style>
 </head>
-
 <body>
 
-  <!-- Dark Mode Toggle -->
-  <div class="dark-toggle" onclick="toggleDark()">🌙 Dark Mode</div>
-
-  <div class="title">Monk Search</div>
-  <div class="tagline">Search with Simplicity</div>
-
-  <!-- LOGIN SCREEN -->
-  <div id="loginBox" class="box">
-    <h3>Login</h3>
-    <input id="username" type="text" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
+  <div class="navbar">
+    <div class="brand">Monk</div>
+    <button class="login-btn" onclick="openLogin()">Login</button>
   </div>
 
-  <!-- SEARCH SCREEN -->
-  <div id="searchBox" class="hidden">
-    <button class="logout-btn" onclick="logout()">Logout</button>
+  <div class="container">
+    <div class="title">Monk</div>
+    <div class="gcse-search"></div>
+  </div>
 
-    <div style="margin-top: 40px;">
-      <div class="gcse-search"></div>
+  <div class="footer">© 2025 Monk Search — All rights reserved</div>
+
+  <!-- Login Popup -->
+  <div id="loginPopup" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); display:flex; justify-content:center; align-items:center;">
+    <div style="background:white; padding:30px; border-radius:12px; width:300px; text-align:center;">
+      <h2>Login</h2>
+      <input id="username" type="text" placeholder="Username" style="width:100%; padding:10px; margin-top:10px; border:1px solid #ccc; border-radius:6px;" />
+      <input id="password" type="password" placeholder="Password" style="width:100%; padding:10px; margin-top:10px; border:1px solid #ccc; border-radius:6px;" />
+      <button onclick="login()" style="margin-top:15px; width:100%; padding:10px; border:none; background:black; color:white; border-radius:6px; cursor:pointer;">Login</button>
+      <button onclick="closeLogin()" style="margin-top:10px; width:100%; padding:10px; border:1px solid black; background:white; color:black; border-radius:6px; cursor:pointer;">Cancel</button>
     </div>
   </div>
 
-  <div class="footer">
-    © 2025 Monk Search — Built for speed and simplicity.
+  <script>
+    function openLogin() {
+      document.getElementById("loginPopup").style.display = "flex";
+    }
+
+    function closeLogin() {
+      document.getElementById("loginPopup").style.display = "none";
+    }
+
+    function login() {
+      let user = document.getElementById("username").value;
+      let pass = document.getElementById("password").value;
+
+      if (user.length > 0 && pass.length > 0) {
+        alert("Login successful!");
+        closeLogin();
+      } else {
+        alert("Please enter username and password");
+      }
+    }
+  </script>
+
+  <!-- Loading Animation -->
+  <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); backdrop-filter:blur(3px); display:flex; justify-content:center; align-items:center; z-index:9999;">
+    <div style="width:60px; height:60px; border:6px solid #ddd; border-top-color:#000; border-radius:50%; animation:spin 0.8s linear infinite;"></div>
   </div>
 
-<script>
-  // SIMPLE LOCAL LOGIN
-  const USER = "monk";
-  const PASS = "search123";
-
-  function login() {
-    const u = document.getElementById("username").value;
-    const p = document.getElementById("password").value;
-
-    if (u === USER && p === PASS) {
-      document.getElementById("loginBox").classList.add("hidden");
-      document.getElementById("searchBox").classList.remove("hidden");
-    } else {
-      alert("Incorrect username or password!");
+  <style>
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
-  }
+  </style>
 
-  function logout() {
-    document.getElementById("searchBox").classList.add("hidden");
-    document.getElementById("loginBox").classList.remove("hidden");
-  }
+<script>
+    function login() {
+      let user = document.getElementById("username").value;
+      let pass = document.getElementById("password").value;
 
-  // DARK MODE
-  function toggleDark() {
-    document.body.classList.toggle("dark");
-  }
+      if (user.length > 0 && pass.length > 0) {
+        document.getElementById("loadingScreen").style.display = "flex";
+
+        setTimeout(() => {
+          document.getElementById("loadingScreen").style.display = "none";
+          alert("Login successful!");
+          closeLogin();
+        }, 1200);
+
+      } else {
+        alert("Please enter username and password");
+      }
+    }
 </script>
+
+</body>
+</html>    }
+  </script>
 
 </body>
 </html>
