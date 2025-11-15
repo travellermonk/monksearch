@@ -4,160 +4,262 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monk Search</title>
-
-  <!-- Google Search Engine -->
-  <script async src="https://cse.google.com/cse.js?cx=a06af4683a2674ae5"></script>
-
   <style>
     body {
       margin: 0;
-      padding: 0;
-      background: #ffffff;
       font-family: Arial, sans-serif;
+      background: #ffffff;
       color: #202124;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      height: 100vh;
+      min-height: 100vh;
     }
 
-    .navbar {
+    /* Top Bar */
+    .topbar {
       width: 100%;
-      padding: 15px 25px;
-      box-sizing: border-box;
+      padding: 14px 25px;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
-      border-bottom: 1px solid #e0e0e0;
-      position: sticky;
-      top: 0;
-      background: white;
+      font-size: 14px;
+      color: #555;
+      gap: 20px;
     }
 
-    .brand {
-      font-size: 28px;
-      font-weight: bold;
-      color: #000;
+    .top-link {
+      text-decoration: none;
+      color: #555;
     }
 
-    .login-btn {
-      font-size: 16px;
-      padding: 8px 16px;
-      border: 1px solid #000;
-      background: transparent;
-      border-radius: 20px;
+    /* Apps Grid Button */
+    .apps-btn svg {
       cursor: pointer;
+    }
+
+    /* Apps Popup */
+    .apps-popup {
+      position: absolute;
+      top: 60px;
+      right: 30px;
+      background: white;
+      width: 260px;
+      padding: 20px;
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      z-index: 100;
+    }
+
+    .app-icon {
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* Search Section */
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .logo {
+      font-size: 64px;
+      font-weight: bold;
+      margin-bottom: 25px;
+      color: #4285F4;
+    }
+
+    /* Search Bar */
+    .search-box {
+      width: 580px;
+      max-width: 90%;
+      background: white;
+      border: 1px solid #dfe1e5;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      gap: 15px;
       transition: 0.2s;
     }
 
-    .login-btn:hover {
-      background: #000;
-      color: white;
+    .search-box:hover {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
     }
 
-    .container {
-      margin-top: 120px;
-      width: 90%;
-      max-width: 600px;
+    .search-input {
+      flex: 1;
+      font-size: 16px;
+      border: none;
+      outline: none;
+    }
+
+    .mic {
+      cursor: pointer;
+    }
+
+    /* Suggestion Box */
+    .suggestions {
+      width: 580px;
+      max-width: 90%;
+      background: white;
+      border: 1px solid #dfe1e5;
+      border-top: none;
+      border-radius: 0 0 20px 20px;
+      display: none;
+      max-height: 260px;
+      overflow-y: auto;
+      padding: 10px 0;
+      margin-top: -12px;
+    }
+
+    .suggestion-item {
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .suggestion-item:hover {
+      background: #f1f3f4;
+    }
+
+    /* Footer */
+    footer {
       text-align: center;
-    }
-
-    .title {
-      font-size: 64px;
-      font-weight: bold;
-      margin-bottom: 40px;
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 20px;
+      color: #70757a;
       font-size: 14px;
-      color: #777;
+      padding: 20px;
     }
   </style>
 </head>
 <body>
 
-  <div class="navbar">
-    <div class="brand">Monk</div>
-    <button class="login-btn" onclick="openLogin()">Login</button>
-  </div>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <a class="top-link" href="https://www.youtube.com" target="_blank">YouTube</a>
+    <a class="top-link" href="https://mail.google.com" target="_blank">Mail</a>
+    <a class="top-link" href="https://maps.google.com" target="_blank">Maps</a>
 
-  <div class="container">
-    <div class="title">Monk</div>
-    <div class="gcse-search"></div>
-  </div>
-
-  <div class="footer">© 2025 Monk Search — All rights reserved</div>
-
-  <!-- Login Popup -->
-  <div id="loginPopup" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); display:flex; justify-content:center; align-items:center;">
-    <div style="background:white; padding:30px; border-radius:12px; width:300px; text-align:center;">
-      <h2>Login</h2>
-      <input id="username" type="text" placeholder="Username" style="width:100%; padding:10px; margin-top:10px; border:1px solid #ccc; border-radius:6px;" />
-      <input id="password" type="password" placeholder="Password" style="width:100%; padding:10px; margin-top:10px; border:1px solid #ccc; border-radius:6px;" />
-      <button onclick="login()" style="margin-top:15px; width:100%; padding:10px; border:none; background:black; color:white; border-radius:6px; cursor:pointer;">Login</button>
-      <button onclick="closeLogin()" style="margin-top:10px; width:100%; padding:10px; border:1px solid black; background:white; color:black; border-radius:6px; cursor:pointer;">Cancel</button>
+    <div class="apps-btn" onclick="toggleApps()">
+      <svg height="22" width="22" viewBox="0 0 24 24" fill="#555">
+        <circle cx="5" cy="5" r="2"></circle>
+        <circle cx="12" cy="5" r="2"></circle>
+        <circle cx="19" cy="5" r="2"></circle>
+        <circle cx="5" cy="12" r="2"></circle>
+        <circle cx="12" cy="12" r="2"></circle>
+        <circle cx="19" cy="12" r="2"></circle>
+        <circle cx="5" cy="19" r="2"></circle>
+        <circle cx="12" cy="19" r="2"></circle>
+        <circle cx="19" cy="19" r="2"></circle>
+      </svg>
     </div>
+
+    <div style="width:34px;height:34px;background:#4285F4;border-radius:50%;color:white;display:flex;justify-content:center;align-items:center;font-weight:bold;">M</div>
+
+    <!-- Dark Mode Toggle -->
+    <button id="modeToggle" onclick="toggleMode()" style="padding:6px 14px; border-radius:20px; border:1px solid #d0d0d0; background:white; cursor:pointer; font-size:13px;">🌙 Dark</button>
+
   </div>
+
+  <!-- APPS POPUP -->
+  <div class="apps-popup" id="appsPopup">
+    <div class="app-icon">YouTube</div>
+    <div class="app-icon">Maps</div>
+    <div class="app-icon">Gmail</div>
+    <div class="app-icon">Drive</div>
+    <div class="app-icon">Images</div>
+    <div class="app-icon">News</div>
+  </div>
+
+  <!-- SEARCH AREA -->
+  <div class="container">
+    <div class="logo">Monk</div>
+
+    <div class="search-box">
+      <input id="searchInput" class="search-input" type="text" placeholder="Search Monk..." oninput="showSuggest()" />
+      <div class="mic" onclick="voiceSearch()">🎤</div>
+    </div>
+
+    <!-- Suggestions -->
+    <div class="suggestions" id="suggestionsBox"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>Monk Search — Faster. Simpler. Cleaner.</footer>
 
   <script>
-    function openLogin() {
-      document.getElementById("loginPopup").style.display = "flex";
+    /* Apps Menu */
+    function toggleApps() {
+      const box = document.getElementById('appsPopup');
+      box.style.display = box.style.display === 'grid' ? 'none' : 'grid';
     }
 
-    function closeLogin() {
-      document.getElementById("loginPopup").style.display = "none";
+    /* Suggestions */
+    const sampleSuggestions = [
+      "Monk Search",
+      "Monk AI",
+      "Monk Engine",
+      "Monk Videos",
+      "Monk Maps",
+      "Search tips",
+      "Fast search engine",
+      "Why is Monk so fast?"
+    ];
+
+    function showSuggest() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const box = document.getElementById("suggestionsBox");
+
+      if (!input) {
+        box.style.display = "none";
+        return;
+      }
+
+      const results = sampleSuggestions.filter(s => s.toLowerCase().includes(input));
+
+      box.innerHTML = results.map(r => `<div class='suggestion-item' onclick='selectSuggestion("${r}")'>${r}</div>`).join('');
+      box.style.display = results.length ? "block" : "none";
     }
 
-    function login() {
-      let user = document.getElementById("username").value;
-      let pass = document.getElementById("password").value;
+    function selectSuggestion(text) {
+      document.getElementById("searchInput").value = text;
+      document.getElementById("suggestionsBox").style.display = "none";
+    }
 
-      if (user.length > 0 && pass.length > 0) {
-        alert("Login successful!");
-        closeLogin();
+    /* Voice Search */
+    function voiceSearch() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-US";
+      recognition.start();
+
+      recognition.onresult = (event) => {
+        document.getElementById('searchInput').value = event.results[0][0].transcript;
+        showSuggest();
+      };
+    }
+  
+
+    /* Dark Mode Toggle */
+    function toggleMode() {
+      const body = document.body;
+      const btn = document.getElementById('modeToggle');
+
+      if (body.classList.contains('dark')) {
+        body.classList.remove('dark');
+        btn.textContent = '🌙 Dark';
       } else {
-        alert("Please enter username and password");
+        body.classList.add('dark');
+        btn.textContent = '☀️ Light';
       }
     }
-  </script>
 
-  <!-- Loading Animation -->
-  <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); backdrop-filter:blur(3px); display:flex; justify-content:center; align-items:center; z-index:9999;">
-    <div style="width:60px; height:60px; border:6px solid #ddd; border-top-color:#000; border-radius:50%; animation:spin 0.8s linear infinite;"></div>
-  </div>
-
-  <style>
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-  </style>
-
-<script>
-    function login() {
-      let user = document.getElementById("username").value;
-      let pass = document.getElementById("password").value;
-
-      if (user.length > 0 && pass.length > 0) {
-        document.getElementById("loadingScreen").style.display = "flex";
-
-        setTimeout(() => {
-          document.getElementById("loadingScreen").style.display = "none";
-          alert("Login successful!");
-          closeLogin();
-        }, 1200);
-
-      } else {
-        alert("Please enter username and password");
-      }
-    }
-</script>
-
-</body>
-</html>    }
   </script>
 
 </body>
